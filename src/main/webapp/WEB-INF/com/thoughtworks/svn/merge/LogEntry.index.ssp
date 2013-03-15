@@ -1,0 +1,4 @@
+<% import com.thoughtworks.svn.merge._ %>
+
+<%@ var it:LogEntry %> 
+<p> ${message} ${revision} </p>

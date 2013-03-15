@@ -1,0 +1,8 @@
+<% import com.thoughtworks.svn.merge._ %>
+
+<% attributes("layout") = "/WEB-INF/templates/layouts/default.scaml" %>
+<% attributes("title") = "Merge Report" %>
+
+<% val missingMerges = SvnMissingMergeFinder.find %>
+<% collection(missingMerges, separator = "<hr/>")  %>
+
