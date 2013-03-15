@@ -5,9 +5,19 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory
 import org.tmatesoft.svn.core.wc.SVNWCUtil
 import collection.mutable
 
+import com.typesafe.config._
+
 object SvnMissingMergeFinder {
   def find : List[LogEntry] = {
-    val svnUrl = SVNURL.create("svn", null, "localhost", 3690, "myrepo/git-training", false)
+    val conf = ConfigFactory.load
+    val protocol = conf.getString("protocol")
+    val host = conf.getString("host")
+    val port = conf.getInt("port")
+    //val path = conf.getString("path")
+    val source = conf.getString("source")
+    val target = conf.getString("target")
+
+    val svnUrl = SVNURL.create(protocol, null, host, port, "myrepo/git-training", false)
 
     val repository = SVNRepositoryFactory.create(svnUrl)
 
@@ -17,7 +27,7 @@ object SvnMissingMergeFinder {
     val connector = new SvnRepositoryConnector(repository)
 
     val finder: SvnMissingMergeFinder = new SvnMissingMergeFinder(connector)
-    finder.findUnmergedRevisions("trunk", "mybranch").toList
+    finder.findUnmergedRevisions(source, target).toList
   }
 }
 
